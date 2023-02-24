@@ -2,15 +2,17 @@
 
 ## install requirements:
   1. install required libraries
-  2. 
-     pip install -r requiremtns.txt
+  
+        pip install -r requiremtns.txt
+     
      
   2. setup pytesseract:
-    a. for windows:
+   
+   a. for windows:
     
       follow this article: https://linuxhint.com/install-tesseract-windows/
       
-    b. for linux:
+   b. for linux:
     
       sudo apt install tesseract-ocr
       
