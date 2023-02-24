@@ -10,11 +10,11 @@
    
    a. for windows:
     
-      follow this article: https://linuxhint.com/install-tesseract-windows/
+        follow this article: https://linuxhint.com/install-tesseract-windows/
       
    b. for linux:
     
-      sudo apt install tesseract-ocr
+        sudo apt install tesseract-ocr
       
 ## How to run:
   1. upload all the images you want to extract MRZ from it to "images" folder
