@@ -3,19 +3,25 @@ import numpy as np
 import imutils
 import cv2
 import PIL
-import glob
 import easyocr
 import pytesseract
 import boto3
+import yaml
+
+with open("utilities/configs.yml") as file:
+    # The FullLoader parameter handles the conversion from YAML
+    # scalar values to Python the dictionary format
+    config = yaml.load(file, Loader=yaml.FullLoader)
 
 
 class OCR:
-    def __init__(self, ocr_module='easyocr', AccessKeyID='', SecretAccessKey=''):
-        self.ocr_module = ocr_module
-        if self.ocr_module == 'easyocr':
+    def __init__(self, module='easyocr', AccessKeyID='', SecretAccessKey=''):
+        print(f"Using ocr: {module}")
+        self.module = module
+        if self.module == 'easyocr':
             self.reader = easyocr.Reader(['en'])
 
-        if self.ocr_module == 'aws':
+        if self.module == 'aws':
             self.rekognition_client = boto3.client('rekognition',
                                                    aws_access_key_id=AccessKeyID,
                                                    aws_secret_access_key=SecretAccessKey,
@@ -38,12 +44,12 @@ class OCR:
         return self.rekognition_client.detect_text(Image={'Bytes': image_bytes})
 
     def get_txt(self, image):
-        if self.ocr_module == 'pytesseract':
+        if self.module == 'pytesseract':
             txt = pytesseract.image_to_string(image, lang='eng')
             txt_lines = txt.split("\n")
             return [t for t in txt_lines if t]
 
-        elif self.ocr_module == 'aws':
+        elif self.module == 'aws':
             txt = self.get_text_using_textract(image)
             return [t["DetectedText"] for t in txt["TextDetections"] if t["Type"] == "LINE"]
 
@@ -54,13 +60,14 @@ class OCR:
 
 
 class MrzExtractor:
-    def __init__(self, sqkernel_sizes):
+    def __init__(self, sqkernel_sizes=None, ocr_module='easyocr'):
         self.rectKernel = cv2.getStructuringElement(cv2.MORPH_RECT, (13, 5))
 
         if not sqkernel_sizes:
             sqkernel_sizes = [21, 13, 11]
 
         self.sqKernel_sizes = sqkernel_sizes
+        self.ocr = OCR(module=ocr_module, AccessKeyID=config["AccessKeyID"], SecretAccessKey=config["SecretAccessKey"])
 
     def get_sorted_contours(self, gray, kernel_size):
         sqKernel = cv2.getStructuringElement(cv2.MORPH_RECT, (kernel_size, kernel_size))
@@ -116,11 +123,10 @@ class MrzExtractor:
             # check to see if the aspect ratio and coverage width are within
             # acceptable criteria
             if ar > 6 and crWidth > 0.3:
-                print(ar, crWidth)
                 # pad the bounding box since we applied erosions and now need
                 # to re-grow it
                 pX = int((x + w) * 0.05)
-                pY = int((y + h) * 0.05)
+                pY = int((y + h) * 0.03)
                 (x, y) = (x - pX, y - pY)
                 (w, h) = (w + (pX * 2), h + (pY * 2))
                 # extract the ROI from the image and draw a bounding box
@@ -129,10 +135,21 @@ class MrzExtractor:
                 cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
                 rois.append(roi)
 
+
         # show the output images
         return rois
 
-    def extract_mrz(self, imagepath):
+    def get_text_from_rois(self, rois):
+        if len(rois) == 1:
+            return self.ocr.get_txt(rois[0])
+        else:
+            lines = []
+            for roi in rois:
+                line = "".join(self.ocr.get_txt(roi))
+                lines.append(line)
+            return lines
+
+    def extract_mrz(self, imagepath, visualize_mrz=False):
 
         for kernel_size in self.sqKernel_sizes:
             # load the image, resize it, and convert it to grayscale
@@ -144,5 +161,13 @@ class MrzExtractor:
             cnts = self.get_sorted_contours(gray, kernel_size)
             rois = self.get_rois(cnts, image)
             if len(rois) > 0:
-                # extract text using ocr
-                break
+
+                # to visulize image after drawing rectangle over region of interest
+                cv2.imshow("Image", image)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
+
+                # extract text using ocrr
+                return self.get_text_from_rois(rois)
+        return []
+
