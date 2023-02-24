@@ -1,18 +1,23 @@
 # Simple-MRZ-Detection-
 
 ## install requirements:
-  1. install required libraries
+  **1. install required libraries**
+  
         pip install -r requiremtns.txt
      
      
-  2. setup pytesseract:
+  **2. setup pytesseract:**
    
    a. for windows:
+   
        follow this article: https://linuxhint.com/install-tesseract-windows/
       
    b. for linux:
+   
        sudo apt install tesseract-ocr
       
+---
+
 ## How to run:
   1. upload all the images you want to extract MRZ from it to "images" folder
   2. run this script:
