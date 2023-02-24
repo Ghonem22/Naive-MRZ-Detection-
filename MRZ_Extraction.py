@@ -16,7 +16,7 @@ with open("utilities/configs.yml") as file:
 
 class OCR:
     def __init__(self, module='easyocr', AccessKeyID='', SecretAccessKey=''):
-        print(f"Using ocr: {module}")
+        print(f"Used OCR: {module}")
         self.module = module
         if self.module == 'easyocr':
             self.reader = easyocr.Reader(['en'])
