@@ -19,14 +19,19 @@
 ---
 
 ## How to run:
-  1. upload all the images you want to extract MRZ from it to "images" folder
-  2. run this script:
-        python run.py --images_path images --visualize True --ocr aws
+  1. upload all the images you want to extract MRZ from them to "images" folder
+  
+  3. run this script:
+  
+            python run.py --images_path images --visualize True --ocr aws
         
         * images_path: the path of the direcotry that contains images
         * visualize: if we want to visualize each image 
         * ocr: the module we want to use to extract text after detecting MRZ region
- we have three options for the ocr:
+
+
+ **we have three options for the ocr:**
+ 
     * easyocr
     * pytesseract
     * aws: using Amazon Textract, but you need to add your aws creditnal to "utilities/configs.yml"
