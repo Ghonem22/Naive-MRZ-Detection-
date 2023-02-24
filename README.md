@@ -30,7 +30,7 @@
         * ocr: the module we want to use to extract text after detecting MRZ region
 
 
- **we have three options for the ocr:**
+ **we have three options for ocr argument:**
  
     * easyocr
     * pytesseract
