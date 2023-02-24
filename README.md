@@ -32,6 +32,6 @@
 
  **we have three options for ocr argument:**
  
-    * easyocr
-    * pytesseract
-    * aws: using Amazon Textract, but you need to add your aws creditnal to "utilities/configs.yml"
+        * easyocr
+        * pytesseract
+        * aws: using Amazon Textract, but you need to add your aws creditnal to "utilities/configs.yml"
