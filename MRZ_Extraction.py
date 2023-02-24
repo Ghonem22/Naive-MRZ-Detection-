@@ -161,11 +161,11 @@ class MrzExtractor:
             cnts = self.get_sorted_contours(gray, kernel_size)
             rois = self.get_rois(cnts, image)
             if len(rois) > 0:
-
-                # to visulize image after drawing rectangle over region of interest
-                cv2.imshow("Image", image)
-                cv2.waitKey(0)
-                cv2.destroyAllWindows()
+                if visualize_mrz:
+                    # to visulize image after drawing rectangle over region of interest
+                    cv2.imshow("Image", image)
+                    cv2.waitKey(0)
+                    cv2.destroyAllWindows()
 
                 # extract text using ocrr
                 return self.get_text_from_rois(rois)
