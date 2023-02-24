@@ -34,3 +34,16 @@
  * easyocr
  * pytesseract
  * aws: using Amazon Textract, but you need to add your aws creditnal to "utilities/configs.yml"
+ 
+---
+
+## Some notes:
+
+ * This is just naive pipeline using classical image processing
+ * We can enhance MRZ detection using object detection model (if we have data), or we can do much optimzation to same concept to detect contours in better way
+ * The Ectraction part using the OCR isn't accurate, we can enhnce that by using super resolution to increase image quality before using OCR
+ 
+---
+## Resources:
+
+ * https://pyimagesearch.com/2015/11/30/detecting-machine-readable-zones-in-passport-images/
