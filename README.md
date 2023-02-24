@@ -23,7 +23,7 @@
   
   3. run this script:
   
-            python run.py --images_path images --visualize True --ocr aws
+            python run.py --images_path images --visualize True --ocr easyocr
         
         * images_path: the path of the direcotry that contains images
         * visualize: if we want to visualize each image 
