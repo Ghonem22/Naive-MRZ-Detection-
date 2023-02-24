@@ -1,4 +1,4 @@
-# Simple-MRZ-Detection-
+# Naive-MRZ-Detection-
 
 ## install requirements:
   **1. install required libraries**
