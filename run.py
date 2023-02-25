@@ -2,6 +2,14 @@ from MRZ_Extraction import *
 import glob
 import argparse
 import os
+import yaml
+
+
+with open("utilities/configs.yml") as file:
+    # The FullLoader parameter handles the conversion from YAML
+    # scalar values to Python the dictionary format
+    config = yaml.load(file, Loader=yaml.FullLoader)
+
 
 
 ap = argparse.ArgumentParser()
@@ -15,7 +23,7 @@ args = vars(ap.parse_args())
 
 
 if __name__ == '__main__':
-    mrz_extractor = MrzExtractor(ocr_module=args["ocr"])
+    mrz_extractor = MrzExtractor(ocr_module=args["ocr"], AccessKeyID = config["AccessKeyID"], SecretAccessKey = config["SecretAccessKey"])
     data_path = os.path.join(args["images_path"], '*g')
     images = glob.glob(data_path)
 
