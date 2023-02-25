@@ -1,6 +1,19 @@
 # Naive-MRZ-Detection-
 
-## install requirements:
+This is an implementation of extracting Machine-Readable Zones (MRZ) from an image based on image processing. The MRZ region contains text, which is used for machine-reading the identity of passports, visas, and other travel documents.
+
+
+**The code performs the following steps to extract the MRZ region:**
+
+1. Adjust image rotation so that the face in the image isn't rotated or flipped
+2. Applies morphological operations (closing) on order to connect the MRZ text in one/ two blocks.
+3. Gets contours from the processed image with different kernel sizes.
+4. Filters out the contours based on their width, height, and aspect ratio.
+5. Uses Optical Character Recognition (OCR) to extract the text from the filtered contour regions.
+---
+
+
+## How to run:
   **1. install required libraries**
   
         pip install -r requiremtns.txt
@@ -16,12 +29,10 @@
    
        sudo apt install tesseract-ocr
       
----
 
-## How to run:
-  1. upload all the images you want to extract MRZ from them to "images" folder
+  3. upload all the images you want to extract MRZ from them to "images" folder
   
-  3. run this script:
+  4. run this script:
   
             python run.py --images_path images --visualize True --ocr easyocr
         
@@ -39,12 +50,11 @@
 
 ## Some notes:
 
- * This is just naive pipeline using classical image processing
- * We can enhance MRZ detection using object detection model (if we have data).
- * we can optimize same pipeline by detecting the large squere contour first, and apply contours detection on that part, this may fix problem of defining the right kernel size.
- * The Ectraction part using the OCR isn't accurate, we can enhnce that by using super resolution to increase image quality before using OCR
- * There's diffrent papers that introduce better approaches, but they depend on CNN, So we need dataset which isn't avialble for our case, so I had to use classical image processing, for ex, https://paperswithcode.com/paper/mrz-code-extraction-from-visa-and-passport/review/
- 
+1. The current pipeline for MRZ detection is based on classical image processing and is considered naive.
+2. We can apply some optimization to this pipeline by first detecting the large square contour (passport) and then applying contour detection on this region. This may solve the problem of defining the right kernel size.
+3. The OCR-based extraction part of the pipeline is not accurate. We can enhance it by using super resolution to increase image quality before using OCR.
+4. There are papers that introduce better approaches for MRZ detection, but they depend on CNNs. Unfortunately, we don't have the dataset available for our case, so we had to rely on classical image processing. One such paper is "MRZ Code Extraction from Visa and Passport" (https://paperswithcode.com/paper/mrz-code-extraction-from-visa-and-passport/review/).
+
  
  
 ---
