@@ -40,8 +40,12 @@
 ## Some notes:
 
  * This is just naive pipeline using classical image processing
- * We can enhance MRZ detection using object detection model (if we have data), or we can do much optimzation to same concept to detect contours in better way
+ * We can enhance MRZ detection using object detection model (if we have data).
+ * we can optimize same pipeline by detecting the large squere contour first, and apply contours detection on that part, this may fix problem of defining the right kernel size.
  * The Ectraction part using the OCR isn't accurate, we can enhnce that by using super resolution to increase image quality before using OCR
+ * There's diffrent papers that introduce better approaches, but they depend on CNN, So we need dataset which isn't avialble for our case, so I had to use classical image processing, for ex, https://paperswithcode.com/paper/mrz-code-extraction-from-visa-and-passport/review/
+ 
+ 
  
 ---
 ## Resources:
